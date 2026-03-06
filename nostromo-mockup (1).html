@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HARRIES // MU-TH-UR 6000</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0c0800;
+      --amber:      #ffb000;
+      --amber-dim:  #a07000;
+      --amber-faint:#4a3000;
+      --amber-glow: rgba(255,176,0,0.12);
+      --border:     #2a1a00;
+      --border-hi:  #3a2500;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--amber);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Very subtle scanlines — just enough */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.07) 3px,
+        rgba(0,0,0,0.07) 4px
+      );
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* Blinking cursor */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background: var(--amber);
+      vertical-align: middle;
+      animation: blink 1.1s step-end infinite;
+    }
+
+    /* ── OUTER SHELL ── */
+    .shell {
+      max-width: 780px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid var(--border-hi);
+      border-right: 1px solid var(--border-hi);
+    }
+
+    /* ── TOP BAR ── */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 24px;
+      border-bottom: 1px solid var(--border-hi);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--amber-dim);
+    }
+
+    .top-bar span { color: var(--amber); }
+
+    /* ── HEADER ── */
+    .header {
+      padding: 40px 40px 32px;
+      border-bottom: 1px solid var(--border-hi);
+    }
+
+    .header-label {
+      font-size: 10px;
+      letter-spacing: 0.5em;
+      color: var(--amber-dim);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .header-title {
+      font-family: 'VT323', monospace;
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      line-height: 1;
+      letter-spacing: 0.1em;
+      color: var(--amber);
+      text-shadow: 0 0 20px rgba(255,176,0,0.5), 0 0 60px rgba(255,176,0,0.15);
+      margin-bottom: 8px;
+    }
+
+    .header-sub {
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      color: var(--amber-dim);
+      text-transform: uppercase;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: var(--border-hi);
+      margin: 0;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      padding: 28px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      color: var(--amber-dim);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    /* ── BRIEFING ── */
+    .briefing {
+      font-size: 13px;
+      color: var(--amber-dim);
+      line-height: 2;
+      letter-spacing: 0.05em;
+    }
+
+    .briefing .line-prompt {
+      color: var(--amber-faint);
+      user-select: none;
+    }
+
+    .briefing .hi { color: var(--amber); }
+
+    /* ── CONTROLS ── */
+    .field-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .field-label {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--amber-dim);
+      text-transform: uppercase;
+      white-space: nowrap;
+      min-width: 120px;
+    }
+
+    .field-label::before { content: '> '; color: var(--amber-faint); }
+
+    .select-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .select-wrap select {
+      width: 100%;
+      appearance: none;
+      background: rgba(255,176,0,0.05);
+      border: 1px solid var(--amber-dim);
+      color: var(--amber);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      padding: 10px 40px 10px 14px;
+      cursor: pointer;
+      outline: none;
+      text-transform: uppercase;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+
+    .select-wrap select:hover {
+      background: rgba(255,176,0,0.08);
+      border-color: var(--amber);
+    }
+
+    .select-wrap select:focus {
+      border-color: var(--amber);
+      background: rgba(255,176,0,0.08);
+      box-shadow: 0 0 0 1px var(--amber);
+    }
+
+    .select-wrap select option {
+      background: #1a0f00;
+      color: var(--amber);
+    }
+
+    .select-arrow {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--amber);
+      font-size: 11px;
+      pointer-events: none;
+      letter-spacing: 0;
+    }
+
+    /* ── BUTTON ── */
+    .exec-btn {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--amber-dim);
+      color: var(--amber);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      padding: 16px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s;
+      margin-bottom: 6px;
+    }
+
+    .exec-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--amber);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+      z-index: 0;
+    }
+
+    .exec-btn span { position: relative; z-index: 1; }
+
+    .exec-btn:hover {
+      border-color: var(--amber);
+      color: var(--bg);
+    }
+
+    .exec-btn:hover::before { transform: scaleX(1); }
+
+    .exec-btn:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+    }
+
+    .exec-btn:disabled::before { transform: scaleX(0) !important; }
+    .exec-btn:disabled { color: var(--amber) !important; }
+
+    .btn-note {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--amber-faint);
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    /* ── STATUS ── */
+    #status-msg {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--amber-dim);
+      min-height: 20px;
+      margin-top: 14px;
+    }
+
+    #status-msg::before { content: '> '; color: var(--amber-faint); }
+    #status-msg:empty::before { content: ''; }
+    #status-msg.error { color: #cc4400; }
+
+    /* ── RESULT ── */
+    #result {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    #result.visible { opacity: 1; }
+
+    /* ── FILM OUTPUT ── */
+    .film-output {
+      display: flex;
+      gap: 0;
+    }
+
+    /* Poster */
+    .poster-col {
+      flex-shrink: 0;
+      width: 150px;
+      border-right: 1px solid var(--border-hi);
+      position: relative;
+      overflow: hidden;
+      background: #080500;
+    }
+
+    .poster-col img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.6s;
+      filter: sepia(1) saturate(0.8) brightness(0.75) hue-rotate(10deg);
+    }
+
+    .poster-col img.loaded { opacity: 1; }
+
+    .poster-placeholder {
+      display: none;
+      min-height: 220px;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--amber-faint);
+      text-transform: uppercase;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .poster-placeholder.visible { display: flex; }
+
+    /* Data */
+    .data-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .film-title-wrap {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .film-title-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      color: var(--amber-faint);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .film-title {
+      font-family: 'VT323', monospace;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      line-height: 1.1;
+      letter-spacing: 0.06em;
+      color: var(--amber);
+      text-shadow: 0 0 12px rgba(255,176,0,0.4);
+    }
+
+    .data-rows {
+      padding: 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .data-row {
+      display: flex;
+      gap: 16px;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      align-items: baseline;
+    }
+
+    .data-key {
+      color: var(--amber-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 10px;
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+
+    .data-val {
+      color: var(--amber-dim);
+      line-height: 1.6;
+    }
+
+    .data-val.bright { color: var(--amber); }
+
+    .genre-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .genre-tag {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      padding: 2px 8px;
+      border: 1px solid var(--amber-faint);
+      color: var(--amber-faint);
+      text-transform: uppercase;
+    }
+
+    /* Film footer */
+    .film-footer {
+      border-top: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .film-footer-msg {
+      font-size: 11px;
+      font-style: italic;
+      color: var(--amber-dim);
+      letter-spacing: 0.05em;
+    }
+
+    .film-footer-id {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--amber-faint);
+      white-space: nowrap;
+    }
+
+    /* ── BOTTOM BAR ── */
+    .bottom-bar {
+      margin-top: auto;
+      border-top: 1px solid var(--border-hi);
+      padding: 8px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--amber-faint);
+    }
+
+    .bottom-bar span { color: var(--amber-dim); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .header { padding: 28px 20px 20px; }
+      .section { padding: 20px; }
+      .film-output { flex-direction: column; }
+      .poster-col { width: 100%; height: 180px; border-right: none; border-bottom: 1px solid var(--border-hi); }
+      .poster-col img { object-fit: cover; max-height: 180px; }
+      .poster-placeholder { min-height: 180px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="shell">
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+      <span>MU-TH-UR 6000 // HARRIES UNIT</span>
+      <span id="clock">--:--:--</span>
+    </div>
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-label">// FILM SELECTION SYSTEM //</div>
+      <div class="header-title">HARRIES</div>
+      <div class="header-sub">Based on an attempt at a Top 250 &nbsp;·&nbsp; The Podcast Nobody Asked For recommendations &nbsp;·&nbsp; Some random shit thrown in</div>
+    </div>
+
+    <!-- BRIEFING -->
+    <div class="section">
+      <div class="section-label">// System Log</div>
+      <div class="briefing">
+        <div><span class="line-prompt">01 </span><span class="hi">DATABASE LOADED.</span> 359 films indexed.</div>
+        <div><span class="line-prompt">02 </span>Sources: Top 250 attempt / podcast recommendations / unknown variables.</div>
+        <div><span class="line-prompt">03 </span>Oracle status: <span class="hi">ACTIVE.</span> Recommendations are binding.</div>
+        <div><span class="line-prompt">04 </span>Awaiting input<span class="cursor"></span></div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="section">
+      <div class="section-label">// Selection Parameters</div>
+
+      <div class="field-row">
+        <span class="field-label">Genre filter</span>
+        <div class="select-wrap">
+          <select id="genre-select">
+            <option value="">Null — oracle decides</option>
+            <option value="Action">Action</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Animation">Animation</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Crime">Crime</option>
+            <option value="Documentary">Documentary</option>
+            <option value="Drama">Drama</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="History">History</option>
+            <option value="Horror">Horror</option>
+            <option value="Music">Music</option>
+            <option value="Mystery">Mystery</option>
+            <option value="Romance">Romance</option>
+            <option value="Science Fiction">Science Fiction</option>
+            <option value="Thriller">Thriller</option>
+            <option value="War">War</option>
+            <option value="Western">Western</option>
+          </select>
+          <span class="select-arrow">▼</span>
+        </div>
+      </div>
+
+      <button class="exec-btn" id="pick-btn"><span>Execute Selection Protocol</span></button>
+      <div class="btn-note" style="margin-top:8px;">The oracle does not negotiate</div>
+      <div id="status-msg"></div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="result">
+      <div class="section" style="padding:0; border-bottom: 1px solid var(--border);">
+        <div class="section-label" style="padding: 16px 24px 0; margin-bottom:0;">// Film Assignment</div>
+        <div class="film-output">
+
+          <div class="poster-col">
+            <div class="poster-placeholder" id="poster-placeholder">
+              <span>No image</span>
+              <span>on file</span>
+            </div>
+            <img id="poster-img" src="" alt="" />
+          </div>
+
+          <div class="data-col">
+            <div class="film-title-wrap">
+              <div class="film-title-label">Title</div>
+              <div class="film-title" id="film-title"></div>
+            </div>
+
+            <div class="data-rows">
+              <div class="data-row">
+                <span class="data-key">Year</span>
+                <span class="data-val bright" id="film-year"></span>
+              </div>
+              <div class="data-row">
+                <span class="data-key">Runtime</span>
+                <span class="data-val" id="film-runtime"></span>
+              </div>
+              <div class="data-row">
+                <span class="data-key">Rating</span>
+                <span class="data-val bright" id="film-rating"></span>
+              </div>
+              <div class="data-row" id="genre-row">
+                <span class="data-key">Genre</span>
+                <div class="data-val genre-tags" id="film-genres"></div>
+              </div>
+              <div class="data-row" id="note-row" style="display:none">
+                <span class="data-key">Note</span>
+                <span class="data-val" id="film-note"></span>
+              </div>
+              <div class="data-row">
+                <span class="data-key">Synopsis</span>
+                <span class="data-val" id="film-overview" style="font-size:11px;"></span>
+              </div>
+              <div class="data-row" id="dir-row" style="display:none">
+                <span class="data-key">Director</span>
+                <span class="data-val bright" id="film-director"></span>
+              </div>
+              <div class="data-row" id="cast-row" style="display:none">
+                <span class="data-key">Cast</span>
+                <span class="data-val" id="film-cast"></span>
+              </div>
+            </div>
+
+            <div class="film-footer">
+              <span class="film-footer-msg" id="card-footer-text"></span>
+              <span class="film-footer-id">MU-TH-UR // HARRIES</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="bottom-bar">
+      <span>HARRIES FILM UNIT // <span>V1.0</span></span>
+      <span id="session">SESSION <span>HTL-001</span></span>
+    </div>
+
+  </div>
+
+<script>
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxAQq3D7K3oOkQlcrAnLl2Gcq8Fphax-p6tehfCyK_L1vQdhGGwH6i9_lkljj4Yhy_KMQ/exec';
+
+  // Clock
+  function tick() {
+    const n = new Date();
+    document.getElementById('clock').textContent =
+      String(n.getHours()).padStart(2,'0') + ':' +
+      String(n.getMinutes()).padStart(2,'0') + ':' +
+      String(n.getSeconds()).padStart(2,'0');
+  }
+  setInterval(tick, 1000);
+  tick();
+
+  const pickBtn  = document.getElementById('pick-btn');
+  const resultEl = document.getElementById('result');
+
+  const quips = [
+    "Recommendation issued. Compliance expected.",
+    "The oracle has spoken. This is your evening now.",
+    "Selection confirmed. Do not argue with the system.",
+    "Film assigned. The oracle does not do refunds.",
+    "Query resolved. You're welcome.",
+    "Database consulted. This is what came back.",
+    "Recommendation stands. That's final.",
+    "The system has decided. The system is always right.",
+  ];
+
+  pickBtn.addEventListener('click', async () => {
+    pickBtn.disabled = true;
+    resultEl.classList.remove('visible');
+    setStatus('Querying database. Stand by.');
+
+    try {
+      const genre = document.getElementById('genre-select').value;
+      const url   = genre ? `${APPS_SCRIPT_URL}?genre=${encodeURIComponent(genre)}` : APPS_SCRIPT_URL;
+      const res   = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const film  = await res.json();
+      showFilm(film);
+      setStatus('');
+    } catch(e) {
+      setStatus(`System failure. ${e.message}`, true);
+    }
+
+    pickBtn.disabled = false;
+  });
+
+  function showFilm(film) {
+    document.getElementById('film-title').textContent    = film.title    || '—';
+    document.getElementById('film-year').textContent     = film.year     || '—';
+    document.getElementById('film-runtime').textContent  = film.runtime  ? film.runtime + ' min' : '—';
+    document.getElementById('film-rating').textContent   = film.rating   ? '★ ' + film.rating : '—';
+    document.getElementById('film-overview').textContent = film.overview || 'No data on file.';
+    document.getElementById('card-footer-text').textContent = quips[Math.floor(Math.random() * quips.length)];
+
+    const noteRow = document.getElementById('note-row');
+    if (film.notes) {
+      document.getElementById('film-note').textContent = film.notes;
+      noteRow.style.display = 'flex';
+    } else { noteRow.style.display = 'none'; }
+
+    const genresEl = document.getElementById('film-genres');
+    genresEl.innerHTML = '';
+    (film.genres || []).forEach(name => {
+      const s = document.createElement('span');
+      s.className = 'genre-tag';
+      s.textContent = name;
+      genresEl.appendChild(s);
+    });
+
+    const dirRow  = document.getElementById('dir-row');
+    const castRow = document.getElementById('cast-row');
+    if (film.director) {
+      document.getElementById('film-director').textContent = film.director;
+      dirRow.style.display = 'flex';
+    } else { dirRow.style.display = 'none'; }
+
+    if (film.cast) {
+      document.getElementById('film-cast').textContent = film.cast;
+      castRow.style.display = 'flex';
+    } else { castRow.style.display = 'none'; }
+
+    const img         = document.getElementById('poster-img');
+    const placeholder = document.getElementById('poster-placeholder');
+    img.classList.remove('loaded');
+    if (film.poster) {
+      placeholder.classList.remove('visible');
+      img.src    = film.poster;
+      img.alt    = film.title;
+      img.onload  = () => img.classList.add('loaded');
+      img.onerror = () => { img.src = ''; placeholder.classList.add('visible'); };
+    } else {
+      img.src = '';
+      placeholder.classList.add('visible');
+    }
+
+    setTimeout(() => resultEl.classList.add('visible'), 50);
+  }
+
+  function setStatus(msg, isError = false) {
+    const el = document.getElementById('status-msg');
+    el.textContent = msg;
+    el.className   = isError ? 'error' : '';
+  }
+</script>
+</body>
+</html>
