@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lord Harries Advises</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=IM+Fell+English:ital@0;1&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ivory:      #faf6ee;
+      --cream:      #f3ecdc;
+      --parchment:  #e8dcc8;
+      --navy:       #1a2340;
+      --navy-mid:   #243058;
+      --gold:       #b8902a;
+      --gold-light: #d4a843;
+      --gold-pale:  #f0d898;
+      --rose:       #c4747a;
+      --rose-pale:  #e8c4c6;
+      --ink:        #2a1f14;
+      --muted:      #7a6e5a;
+      --border:     #d4c4a0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--ivory);
+      background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(180,144,80,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(196,116,122,0.07) 0%, transparent 60%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b8902a' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Ornate top border ── */
+    .top-border {
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(90deg, var(--navy), var(--gold), var(--navy-mid), var(--gold-light), var(--navy));
+    }
+
+    /* ── Header band ── */
+    .header-band {
+      width: 100%;
+      background: var(--navy);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .header-band-text {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      color: var(--gold-pale);
+      text-transform: uppercase;
+    }
+
+    .band-ornament {
+      color: var(--gold);
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    /* ── Main wrapper ── */
+    main {
+      width: 100%;
+      max-width: 860px;
+      padding: 0 24px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Hero header ── */
+    header {
+      text-align: center;
+      padding: 60px 20px 0;
+      width: 100%;
+    }
+
+    .crest {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      opacity: 0;
+      animation: fadeDown 1s ease 0.2s forwards;
+    }
+
+    .eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeDown 1s ease 0.4s forwards;
+    }
+
+    h1 {
+      font-family: 'IM Fell English', Georgia, serif;
+      font-size: clamp(2.6rem, 6vw, 4.8rem);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--navy);
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: fadeDown 1s ease 0.5s forwards;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--muted);
+      font-weight: 300;
+      margin-top: 12px;
+      opacity: 0;
+      animation: fadeDown 1s ease 0.65s forwards;
+    }
+
+    /* ── Floral divider ── */
+    .divider {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 36px 0;
+      opacity: 0;
+      animation: fadeIn 1s ease 0.8s forwards;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      max-width: 180px;
+    }
+
+    .divider-ornament {
+      color: var(--gold);
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    /* ── Wax seal button ── */
+    .button-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 52px;
+      opacity: 0;
+      animation: fadeDown 1s ease 0.9s forwards;
+    }
+
+    #pick-btn {
+      position: relative;
+      background: var(--navy);
+      border: none;
+      color: var(--gold-pale);
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      padding: 18px 52px;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      clip-path: polygon(12px 0%, calc(100% - 12px) 0%, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0% 50%);
+    }
+
+    #pick-btn::before {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border: 1px solid rgba(184,144,42,0.3);
+      clip-path: polygon(10px 0%, calc(100% - 10px) 0%, 100% 50%, calc(100% - 10px) 100%, 10px 100%, 0% 50%);
+      transition: border-color 0.35s;
+      pointer-events: none;
+    }
+
+    #pick-btn:hover {
+      background: var(--gold);
+      color: var(--navy);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(26,35,64,0.2);
+    }
+
+    #pick-btn:hover::before { border-color: rgba(26,35,64,0.3); }
+
+    #pick-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-flourish {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Status ── */
+    #status-msg {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--muted);
+      margin-top: -32px;
+      margin-bottom: 32px;
+      min-height: 22px;
+      text-align: center;
+      transition: color 0.2s;
+    }
+    #status-msg.error { color: var(--rose); }
+
+    /* ── Result card ── */
+    #result {
+      width: 100%;
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      pointer-events: none;
+    }
+    #result.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+
+    .card-outer {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      box-shadow:
+        0 2px 4px rgba(26,35,64,0.06),
+        0 12px 40px rgba(26,35,64,0.1),
+        inset 0 0 0 4px var(--ivory),
+        inset 0 0 0 5px var(--border);
+      position: relative;
+      overflow: visible;
+    }
+
+    /* Corner ornaments */
+    .card-outer::before,
+    .card-outer::after {
+      content: '❧';
+      position: absolute;
+      font-size: 1.2rem;
+      color: var(--gold);
+      opacity: 0.5;
+      line-height: 1;
+    }
+    .card-outer::before { top: 10px; left: 14px; }
+    .card-outer::after  { bottom: 10px; right: 14px; transform: rotate(180deg); }
+
+    .card-inner {
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ── Poster ── */
+    .poster-wrap {
+      flex-shrink: 0;
+      width: 200px;
+      min-height: 300px;
+      position: relative;
+      overflow: hidden;
+      background: var(--parchment);
+    }
+
+    .poster-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      position: absolute;
+      inset: 0;
+      filter: sepia(8%);
+    }
+    .poster-wrap img.loaded { opacity: 1; }
+
+    .poster-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--border);
+    }
+
+    .poster-placeholder svg { width: 48px; height: 48px; opacity: 0.4; }
+
+    /* Gold frame edge on poster */
+    .poster-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 3px rgba(184,144,42,0.25);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* ── Film info ── */
+    .info {
+      flex: 1;
+      padding: 32px 36px 32px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      font-family: 'Cinzel', serif;
+      font-size: 9.5px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .meta-divider { color: var(--border); }
+
+    .rating-badge {
+      background: var(--navy);
+      color: var(--gold-pale);
+      padding: 2px 10px;
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+    }
+
+    .film-title {
+      font-family: 'IM Fell English', Georgia, serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    /* Personal note — curator's voice */
+    .film-note {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--gold);
+      font-weight: 300;
+      margin-bottom: 14px;
+      padding: 8px 14px;
+      border-left: 2px solid var(--gold-pale);
+      background: rgba(184,144,42,0.05);
+      line-height: 1.55;
+    }
+
+    .film-overview {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #5a4e3a;
+      font-weight: 300;
+      margin-bottom: 22px;
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .genres {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .credits-block {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .credit-row {
+      display: flex;
+      gap: 10px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      align-items: baseline;
+    }
+
+    .credit-label {
+      font-family: 'Cinzel', serif;
+      font-size: 8.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      white-space: nowrap;
+      padding-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .credit-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--ink);
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .genre-tag {
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      background: rgba(255,255,255,0.5);
+    }
+
+    /* ── Bottom flourish ── */
+    .card-footer {
+      border-top: 1px solid var(--border);
+      padding: 12px 32px;
+      text-align: center;
+      background: rgba(26,35,64,0.03);
+    }
+
+    .card-footer-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Footer ── */
+    .page-footer {
+      margin-top: 60px;
+      text-align: center;
+      padding-bottom: 40px;
+    }
+
+    .page-footer-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--border);
+    }
+
+    /* ── Bottom border ── */
+    .bottom-border {
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(90deg, var(--navy), var(--gold), var(--navy-mid), var(--gold-light), var(--navy));
+      margin-top: auto;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      .card-inner { flex-direction: column; }
+      .poster-wrap { width: 100%; height: 260px; min-height: unset; }
+      .poster-wrap img { position: static; height: 260px; }
+      .info { padding: 24px 20px; }
+      #pick-btn { padding: 16px 36px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-border"></div>
+
+  <div class="header-band">
+    <span class="band-ornament">✦</span>
+    <span class="header-band-text">The Cinematic Prophecies of Lord Harries</span>
+    <span class="band-ornament">✦</span>
+  </div>
+
+  <main>
+    <header>
+
+      <!-- Crest SVG -->
+      <svg class="crest" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="36" stroke="#b8902a" stroke-width="1"/>
+        <circle cx="40" cy="40" r="30" stroke="#b8902a" stroke-width="0.5" stroke-dasharray="3 3"/>
+        <path d="M40 14 L43 26 L40 22 L37 26 Z" fill="#b8902a" opacity="0.8"/>
+        <path d="M40 66 L43 54 L40 58 L37 54 Z" fill="#b8902a" opacity="0.8"/>
+        <path d="M14 40 L26 37 L22 40 L26 43 Z" fill="#b8902a" opacity="0.8"/>
+        <path d="M66 40 L54 37 L58 40 L54 43 Z" fill="#b8902a" opacity="0.8"/>
+        <text x="40" y="44" text-anchor="middle" font-family="IM Fell English, Georgia, serif" font-size="13" fill="#1a2340" font-style="italic">LH</text>
+        <path d="M28 34 Q40 28 52 34" stroke="#b8902a" stroke-width="0.75" fill="none" opacity="0.5"/>
+        <path d="M28 46 Q40 52 52 46" stroke="#b8902a" stroke-width="0.75" fill="none" opacity="0.5"/>
+      </svg>
+
+      <p class="eyebrow">Lord Harries, Film Oracle & Soothsayer</p>
+      <h1>His Lordship<br/><em>advises you</em> to watch</h1>
+      <p class="subtitle">Cinematic prophecies of the highest distinction, delivered with unwavering authority</p>
+    </header>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-ornament">❦</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="button-wrap">
+      <button id="pick-btn">Seek Lord Harries' Counsel</button>
+      <span class="btn-flourish">— his prophecy shall be revealed —</span>
+    </div>
+
+    <div id="status-msg"></div>
+
+    <div id="result">
+      <div class="card-outer">
+        <div class="card-inner">
+
+          <div class="poster-wrap">
+            <div class="poster-placeholder">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="6" width="32" height="36" rx="1" stroke="#b8902a" stroke-width="1.5"/>
+                <path d="M16 18 L24 12 L32 18" stroke="#b8902a" stroke-width="1" fill="none"/>
+                <circle cx="24" cy="26" r="5" stroke="#b8902a" stroke-width="1"/>
+                <path d="M12 38 L36 38" stroke="#b8902a" stroke-width="0.75" stroke-dasharray="2 2"/>
+              </svg>
+            </div>
+            <img id="poster-img" src="" alt="" />
+          </div>
+
+          <div class="info">
+            <div class="meta-row">
+              <span id="film-year">—</span>
+              <span class="meta-divider">·</span>
+              <span id="film-runtime">—</span>
+              <span class="meta-divider">·</span>
+              <span class="rating-badge" id="film-rating">—</span>
+            </div>
+            <h2 class="film-title" id="film-title"></h2>
+            <p class="film-note" id="film-note" style="display:none"></p>
+            <p class="film-overview" id="film-overview"></p>
+            <div class="genres" id="film-genres"></div>
+
+            <div class="credits-block" id="credits-block" style="display:none">
+              <div class="credit-row">
+                <span class="credit-label">Directed by</span>
+                <span class="credit-value" id="film-director"></span>
+              </div>
+              <div class="credit-row">
+                <span class="credit-label">Starring</span>
+                <span class="credit-value" id="film-cast"></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="card-footer">
+          <span class="card-footer-text" id="card-footer-text">Lord Harries awaits your supplication</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider" style="margin-top: 60px; opacity: 0.5;">
+      <div class="divider-line"></div>
+      <span class="divider-ornament" style="font-size:1rem;">✦</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="page-footer">
+      <p class="page-footer-text">Lord Harries has spoken &mdash; you would do well to obey</p>
+    </div>
+
+  </main>
+
+  <div class="bottom-border"></div>
+
+<script>
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxAQq3D7K3oOkQlcrAnLl2Gcq8Fphax-p6tehfCyK_L1vQdhGGwH6i9_lkljj4Yhy_KMQ/exec';
+
+  const pickBtn  = document.getElementById('pick-btn');
+  const resultEl = document.getElementById('result');
+
+  const footerQuips = [
+    "Lord Harries has spoken. Compliance is expected.",
+    "His Lordship rarely errs. This evening shall be most splendid.",
+    "The oracle has consulted the celestial spheres on your behalf.",
+    "Lord Harries endorses this picture without reservation.",
+    "One does not question the soothsayer. One simply watches.",
+    "His Lordship selected this personally from the astral archives.",
+    "The prophecy is sealed. Your evening is accounted for.",
+    "Lord Harries trusts you will not disappoint him by declining.",
+    "A vision came to His Lordship at half past three. This was it.",
+    "The stars aligned. Lord Harries noticed. You benefit.",
+  ];
+
+  pickBtn.addEventListener('click', async () => {
+    pickBtn.disabled = true;
+    resultEl.classList.remove('visible');
+    setStatus('Lord Harries is consulting the celestial spheres…');
+
+    try {
+      const res = await fetch(APPS_SCRIPT_URL);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const film = await res.json();
+      showFilm(film);
+      setStatus('');
+    } catch (e) {
+      setStatus(`We regret to inform you — the oracle is indisposed: ${e.message}`, true);
+    }
+
+    pickBtn.disabled = false;
+  });
+
+  function showFilm(film) {
+    document.getElementById('film-title').textContent = film.title || '—';
+    document.getElementById('film-year').textContent = film.year || '—';
+    document.getElementById('film-runtime').textContent = film.runtime ? `${film.runtime} min` : '—';
+    document.getElementById('film-rating').textContent = film.rating ? '★ ' + film.rating : '—';
+    document.getElementById('film-overview').textContent = film.overview || 'No synopsis is available at present.';
+    document.getElementById('card-footer-text').textContent = footerQuips[Math.floor(Math.random() * footerQuips.length)];
+
+    setNote(film.notes);
+
+    // Genres
+    const g = document.getElementById('film-genres');
+    g.innerHTML = '';
+    (film.genres || []).forEach(name => {
+      const s = document.createElement('span');
+      s.className = 'genre-tag';
+      s.textContent = name;
+      g.appendChild(s);
+    });
+
+    // Credits
+    const creditsBlock = document.getElementById('credits-block');
+    if (film.director || film.cast) {
+      document.getElementById('film-director').textContent = film.director || '—';
+      document.getElementById('film-cast').textContent = film.cast || '—';
+      creditsBlock.style.display = 'flex';
+    } else {
+      creditsBlock.style.display = 'none';
+    }
+
+    // Poster
+    const img = document.getElementById('poster-img');
+    img.classList.remove('loaded');
+    if (film.poster) {
+      img.src = film.poster;
+      img.alt = film.title;
+      img.onload = () => img.classList.add('loaded');
+    } else {
+      img.src = '';
+    }
+
+    setTimeout(() => resultEl.classList.add('visible'), 50);
+  }
+
+  function setNote(note) {
+    const el = document.getElementById('film-note');
+    if (note) { el.textContent = '\u201C' + note + '\u201D'; el.style.display = 'block'; }
+    else { el.textContent = ''; el.style.display = 'none'; }
+  }
+
+  function setStatus(msg, isError = false) {
+    const el = document.getElementById('status-msg');
+    el.textContent = msg;
+    el.className = isError ? 'error' : '';
+  }
+</script>
+</body>
+</html>
