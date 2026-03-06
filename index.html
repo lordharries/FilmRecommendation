@@ -489,12 +489,86 @@
       to   { opacity: 1; }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 640px) {
+      /* Header band */
+      .header-band { padding: 8px 12px; gap: 8px; }
+      .header-band-text { font-size: 8px; letter-spacing: 0.25em; text-align: center; }
+      .band-ornament { display: none; }
+
+      /* Main padding */
+      main { padding: 40px 16px 60px; }
+
+      /* Crest */
+      .crest { width: 56px; height: 56px; margin-bottom: 16px; }
+
+      /* Typography scale down */
+      h1 { font-size: 2.4rem; }
+      .subtitle { font-size: 1rem; }
+      .eyebrow { font-size: 9px; letter-spacing: 0.3em; }
+
+      /* Dividers */
+      .divider { margin: 24px 0; }
+
+      /* Button */
+      .button-wrap { margin-bottom: 36px; }
+      #pick-btn {
+        padding: 16px 28px;
+        font-size: 0.75rem;
+        letter-spacing: 0.18em;
+        clip-path: polygon(8px 0%, calc(100% - 8px) 0%, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0% 50%);
+        width: 100%;
+        max-width: 320px;
+      }
+      .btn-flourish { font-size: 0.8rem; }
+
+      /* Card — stack poster above info */
+      .card-outer { box-shadow: 0 4px 24px rgba(26,35,64,0.12); }
       .card-inner { flex-direction: column; }
-      .poster-wrap { width: 100%; height: 260px; min-height: unset; }
-      .poster-wrap img { position: static; height: 260px; }
-      .info { padding: 24px 20px; }
-      #pick-btn { padding: 16px 36px; }
+
+      .poster-wrap {
+        width: 100%;
+        height: 340px;
+        min-height: unset;
+      }
+      .poster-wrap img {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+      }
+
+      /* Info panel */
+      .info { padding: 20px 18px 18px; }
+
+      .meta-row { gap: 8px; font-size: 9px; margin-bottom: 10px; }
+
+      .film-title { font-size: 1.6rem; margin-bottom: 10px; }
+
+      .film-note { font-size: 0.9rem; padding: 6px 10px; margin-bottom: 12px; }
+
+      .film-overview {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        margin-bottom: 16px;
+        -webkit-line-clamp: 6;
+      }
+
+      .genres { gap: 5px; margin-bottom: 14px; }
+      .genre-tag { font-size: 8px; padding: 3px 9px; }
+
+      .credits-block { gap: 6px; padding-top: 12px; }
+      .credit-row { gap: 8px; }
+      .credit-label { font-size: 8px; }
+      .credit-value { font-size: 0.9rem; }
+
+      .card-footer { padding: 10px 16px; }
+      .card-footer-text { font-size: 0.8rem; }
+
+      /* Card corner ornaments — hide on small screens */
+      .card-outer::before,
+      .card-outer::after { display: none; }
+
+      /* Page footer */
+      .page-footer { margin-top: 40px; }
     }
   </style>
 </head>
