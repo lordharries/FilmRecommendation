@@ -278,7 +278,7 @@
     .poster-wrap {
       width: 100%;
       position: relative;
-      background: var(--navy);
+      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -298,13 +298,14 @@
     .poster-placeholder {
       width: 100%;
       height: 200px;
-      display: flex;
+      display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 8px;
       color: var(--border);
     }
+    .poster-placeholder.visible { display: flex; }
 
     .poster-placeholder svg { width: 48px; height: 48px; opacity: 0.4; }
 
@@ -534,6 +535,61 @@
       .card-outer::before, .card-outer::after { display: none; }
       .page-footer { margin-top: 40px; }
     }
+
+    /* ── Genre filter ── */
+    .genre-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+      margin-bottom: 4px;
+    }
+
+    .genre-label {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .genre-select-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .genre-select-wrap select {
+      appearance: none;
+      -webkit-appearance: none;
+      background: var(--cream);
+      border: 1px solid var(--gold);
+      color: var(--navy);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1rem;
+      font-style: italic;
+      padding: 8px 40px 8px 16px;
+      cursor: pointer;
+      outline: none;
+      min-width: 220px;
+      text-align: center;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .genre-select-wrap select:focus {
+      border-color: var(--gold-light);
+      box-shadow: 0 0 0 2px rgba(184,144,42,0.15);
+    }
+
+    .select-arrow {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+      font-size: 14px;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -564,7 +620,7 @@
 
       <p class="eyebrow">Lord Harries, Film Oracle & Soothsayer</p>
       <h1>His Lordship<br/><em>advises you</em> to watch</h1>
-      <p class="subtitle">Cinematic prophecies of the highest distinction, delivered with unwavering authority</p>
+      <p class="subtitle">Based on an attempt to make a favourite 250 movie list, the movies recommended on The Podcast Nobody Asked For, and some random shit thrown in</p>
     </header>
 
     <div class="divider">
@@ -576,6 +632,33 @@
     <div class="button-wrap">
       <button id="pick-btn">Seek Lord Harries' Counsel</button>
       <span class="btn-flourish">— his prophecy shall be revealed —</span>
+    </div>
+
+    <div class="genre-wrap">
+      <label class="genre-label" for="genre-select">His Lordship may be directed towards</label>
+      <div class="genre-select-wrap">
+        <select id="genre-select">
+          <option value="">Any genre whatsoever</option>
+          <option value="Action">Action</option>
+          <option value="Adventure">Adventure</option>
+          <option value="Animation">Animation</option>
+          <option value="Comedy">Comedy</option>
+          <option value="Crime">Crime</option>
+          <option value="Documentary">Documentary</option>
+          <option value="Drama">Drama</option>
+          <option value="Fantasy">Fantasy</option>
+          <option value="History">History</option>
+          <option value="Horror">Horror</option>
+          <option value="Music">Music</option>
+          <option value="Mystery">Mystery</option>
+          <option value="Romance">Romance</option>
+          <option value="Science Fiction">Science Fiction</option>
+          <option value="Thriller">Thriller</option>
+          <option value="War">War</option>
+          <option value="Western">Western</option>
+        </select>
+        <span class="select-arrow">❧</span>
+      </div>
     </div>
 
     <div id="status-msg"></div>
@@ -667,7 +750,9 @@
     setStatus('Lord Harries is consulting the celestial spheres…');
 
     try {
-      const res = await fetch(APPS_SCRIPT_URL);
+      const genre = document.getElementById('genre-select').value;
+      const url = genre ? `${APPS_SCRIPT_URL}?genre=${encodeURIComponent(genre)}` : APPS_SCRIPT_URL;
+      const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const film = await res.json();
       showFilm(film);
@@ -711,13 +796,17 @@
 
     // Poster
     const img = document.getElementById('poster-img');
+    const placeholder = document.querySelector('.poster-placeholder');
     img.classList.remove('loaded');
     if (film.poster) {
+      placeholder.classList.remove('visible');
       img.src = film.poster;
       img.alt = film.title;
       img.onload = () => img.classList.add('loaded');
+      img.onerror = () => { img.src = ''; placeholder.classList.add('visible'); };
     } else {
       img.src = '';
+      placeholder.classList.add('visible');
     }
 
     setTimeout(() => resultEl.classList.add('visible'), 50);
