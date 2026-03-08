@@ -434,7 +434,7 @@
     document.getElementById('film-runtime').textContent  = film.runtime  ? film.runtime + ' min' : '';
     document.getElementById('film-rating').textContent   = film.rating   ? '★ ' + film.rating : '';
     document.getElementById('film-overview').textContent = film.overview || '';
-    document.getElementById('quip').textContent          = quips[Math.floor(Math.random() * quips.length)];
+
 
     document.getElementById('dot-1').style.display = (film.year && film.runtime) ? 'block' : 'none';
     document.getElementById('dot-2').style.display = (film.runtime && film.rating) ? 'block' : 'none';
