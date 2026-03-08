@@ -273,7 +273,8 @@
     /* ── FOOTER ── */
     footer {
       font-size: 11px; color: var(--black-soft);
-      text-align: center; opacity: 0.4; letter-spacing: 0.05em;
+      text-align: center; opacity: 0.45;
+      font-style: italic; line-height: 1.6;
     }
   </style>
 </head>
@@ -388,11 +389,37 @@
 
   </div>
 
-  <footer>Harries Film Unit</footer>
+  <footer id="footer-quote"></footer>
 
 </div>
 
 <script>
+  const footerQuotes = [
+    '"I don\'t make films to be understood. I make films to be felt." — Nicolas Winding Refn',
+    '"A film should be like a stone in your shoe." — Luis Buñuel',
+    '"Cinema is an invention without a future." — Louis Lumière',
+    '"If it\'s a good movie, the sound could go off and the audience would still have a perfectly clear idea of what was going on." — Alfred Hitchcock',
+    '"Film is not the art of scholars, but of illiterates." — Werner Herzog',
+    '"I like boring things." — Andy Warhol',
+    '"I don\'t dream at night, I dream at day; I dream all day. I\'m dreaming for a living." — Steven Spielberg',
+    '"The cinema substitutes for our gaze a world more in harmony with our desires." — André Bazin',
+    '"The enemy of art is the absence of limitations." — Orson Welles',
+    '"Reality is not enough." — Werner Herzog',
+    '"A film is a petrified fountain of thought." — Jean Cocteau',
+    '"Cinema is a mirror painted with light." — Jean Cocteau',
+    '"I make films for people who don\'t like my films." — Michael Haneke',
+    '"The camera is an instrument that teaches people how to see without a camera." — Dorothea Lange',
+    '"I want people to get lost in my films." — David Lynch',
+    '"We are like the dreamer who dreams and then lives inside the dream." — David Lynch',
+    '"Film is like a battleground: love, hate, action, violence, death... in one word, emotion." — Samuel Fuller',
+    '"Sometimes you have to destroy cinema to make cinema." — Jean-Luc Godard',
+    '"The film director is the only person who can say \'cut\' and actually mean it." — Frank Capra',
+    '"Cinema is truth twenty-four frames per second, and every cut is a lie." — Jean-Luc Godard',
+    '"Films great isn\'t it?" — Ian Harries',
+  ];
+
+  document.getElementById('footer-quote').textContent = footerQuotes[Math.floor(Math.random() * footerQuotes.length)];
+
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxAQq3D7K3oOkQlcrAnLl2Gcq8Fphax-p6tehfCyK_L1vQdhGGwH6i9_lkljj4Yhy_KMQ/exec';
 
   const quips = [
