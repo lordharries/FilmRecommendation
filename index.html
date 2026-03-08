@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>What do you think I should watch?</title>
+  <title>What Should I Watch?</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=Bebas+Neue&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -11,7 +11,6 @@
     :root {
       --yellow:     #ffc107;
       --yellow-dim: #e6a800;
-      --yellow-pale:#fff3cd;
       --red:        #c0392b;
       --red-dim:    #922b21;
       --black:      #1a1208;
@@ -35,25 +34,12 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Leather texture via layered gradients + noise */
     body {
       background-color: #ffc107;
       background-image:
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E"),
-        repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 2px,
-          rgba(0,0,0,0.012) 2px,
-          rgba(0,0,0,0.012) 4px
-        ),
-        repeating-linear-gradient(
-          90deg,
-          transparent,
-          transparent 3px,
-          rgba(255,255,255,0.015) 3px,
-          rgba(255,255,255,0.015) 6px
-        ),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.012) 2px, rgba(0,0,0,0.012) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(255,255,255,0.015) 3px, rgba(255,255,255,0.015) 6px),
         radial-gradient(ellipse at 30% 20%, #ffd740 0%, #ffc107 50%, #f5a800 100%);
     }
 
@@ -67,11 +53,7 @@
     }
 
     /* ── HEADER ── */
-    header {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    header { display: flex; flex-direction: column; gap: 10px; }
 
     .podcast-tag {
       display: inline-flex;
@@ -84,12 +66,10 @@
       color: var(--black-soft);
       opacity: 0.6;
     }
-
     .podcast-tag::before {
       content: '';
       display: inline-block;
-      width: 18px;
-      height: 2px;
+      width: 18px; height: 2px;
       background: var(--red);
     }
 
@@ -100,11 +80,7 @@
       letter-spacing: 0.02em;
       color: var(--black);
     }
-
-    .site-name em {
-      font-style: normal;
-      color: var(--red);
-    }
+    .site-name em { font-style: normal; color: var(--red); }
 
     .site-desc {
       font-size: 12px;
@@ -118,92 +94,11 @@
       background: var(--cream);
       border-radius: 6px;
       border: 1px solid var(--border-dim);
-      box-shadow:
-        0 2px 0 rgba(0,0,0,0.08),
-        0 8px 24px rgba(0,0,0,0.15),
-        inset 0 1px 0 rgba(255,255,255,0.6);
+      box-shadow: 0 2px 0 rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.6);
       overflow: hidden;
     }
 
-    /* ── CONTROLS ── */
-    .controls {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    label {
-      display: block;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 7px;
-    }
-
-    .select-wrap { position: relative; }
-
-    select {
-      width: 100%;
-      appearance: none;
-      background: var(--tan);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      color: var(--black);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      padding: 11px 36px 11px 13px;
-      cursor: pointer;
-      outline: none;
-      transition: border-color 0.15s;
-    }
-
-    select:hover { border-color: var(--yellow-dim); }
-    select:focus { border-color: var(--yellow); box-shadow: 0 0 0 2px rgba(255,193,7,0.25); }
-    select option { background: var(--cream); }
-
-    .select-arrow {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-      color: var(--muted);
-    }
-    .select-arrow svg { display: block; width: 14px; height: 14px; }
-
-    /* ── BUTTON ── */
-    button {
-      width: 100%;
-      background: var(--yellow);
-      border: none;
-      border-radius: var(--radius);
-      color: var(--black);
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.2rem;
-      letter-spacing: 0.08em;
-      padding: 14px;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
-      box-shadow: 0 2px 0 var(--yellow-dim), 0 4px 12px rgba(255,193,7,0.3);
-    }
-
-    button:hover  { background: #ffd340; }
-    button:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--yellow-dim); }
-    button:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-
-    /* ── STATUS ── */
-    #status-msg {
-      font-size: 13px;
-      color: var(--muted);
-      min-height: 18px;
-      font-style: italic;
-    }
-    #status-msg.error { color: var(--red); font-style: normal; }
-
-    /* ── RESULT ── */
+    /* ── RESULT — shown prominently at top of card ── */
     #result {
       display: none;
       flex-direction: column;
@@ -219,10 +114,8 @@
       overflow: hidden;
       flex-shrink: 0;
     }
-
     .poster-wrap img {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
       display: block;
       opacity: 0;
@@ -231,50 +124,24 @@
     .poster-wrap img.loaded { opacity: 1; }
 
     .poster-placeholder {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
       color: var(--border);
     }
 
     /* ── FILM INFO ── */
     .film-info {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      border-top: 1px solid var(--border);
+      padding: 20px 20px 16px;
+      display: flex; flex-direction: column; gap: 12px;
     }
 
     .film-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
     }
-
-    .meta-item {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .meta-dot {
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background: var(--border);
-      flex-shrink: 0;
-    }
-
-    .meta-item.rating {
-      color: var(--red);
-      font-weight: 500;
-    }
+    .meta-item { font-size: 12px; color: var(--muted); }
+    .meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+    .meta-item.rating { color: var(--red); font-weight: 500; }
 
     .film-title {
       font-family: 'Bebas Neue', sans-serif;
@@ -284,79 +151,129 @@
       color: var(--black);
     }
 
-    .film-genres {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-
+    .film-genres { display: flex; flex-wrap: wrap; gap: 5px; }
     .genre-tag {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 2px 9px;
-      border-radius: 100px;
-      background: var(--tan);
-      border: 1px solid var(--border);
-      color: var(--muted-hi);
+      font-size: 10px; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 2px 9px;
+      border-radius: 100px; background: var(--tan);
+      border: 1px solid var(--border); color: var(--muted-hi);
     }
 
     .film-note {
-      font-size: 13px;
-      font-style: italic;
-      color: var(--muted-hi);
-      line-height: 1.65;
-      padding-left: 12px;
+      font-size: 13px; font-style: italic; color: var(--muted-hi);
+      line-height: 1.65; padding-left: 12px;
       border-left: 3px solid var(--yellow);
     }
 
     .film-overview {
-      font-size: 13px;
-      color: var(--muted-hi);
-      line-height: 1.75;
-      font-weight: 300;
+      font-size: 13px; color: var(--muted-hi);
+      line-height: 1.75; font-weight: 300;
     }
 
     .film-credits {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      padding-top: 12px;
-      border-top: 1px solid var(--tan-dark);
+      display: flex; flex-direction: column; gap: 5px;
+      padding-top: 12px; border-top: 1px solid var(--tan-dark);
     }
-
-    .credit-row {
-      display: flex;
-      gap: 10px;
-      font-size: 12px;
-    }
-
-    .credit-label {
-      color: var(--muted);
-      min-width: 56px;
-      flex-shrink: 0;
-    }
-
+    .credit-row { display: flex; gap: 10px; font-size: 12px; }
+    .credit-label { color: var(--muted); min-width: 56px; flex-shrink: 0; }
     .credit-value { color: var(--black-soft); }
 
     /* ── QUIP ── */
     .quip {
-      padding: 12px 20px;
+      padding: 10px 20px;
+      font-size: 12px; font-style: italic;
+      color: var(--muted); background: var(--tan);
       border-top: 1px solid var(--tan-dark);
-      font-size: 12px;
-      font-style: italic;
-      color: var(--muted);
-      background: var(--tan);
     }
+
+    /* ── DIVIDER inside card ── */
+    .card-divider {
+      height: 1px;
+      background: var(--tan-dark);
+      margin: 0;
+    }
+
+    /* ── CONTROLS (below result) ── */
+    .controls {
+      padding: 20px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 7px;
+    }
+
+    .select-wrap { position: relative; }
+
+    select {
+      width: 100%; appearance: none;
+      background: var(--tan); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--black);
+      font-family: 'DM Sans', sans-serif; font-size: 14px;
+      padding: 11px 36px 11px 13px; cursor: pointer; outline: none;
+      transition: border-color 0.15s;
+    }
+    select:hover { border-color: var(--yellow-dim); }
+    select:focus { border-color: var(--yellow); box-shadow: 0 0 0 2px rgba(255,193,7,0.25); }
+    select option { background: var(--cream); }
+
+    .select-arrow {
+      position: absolute; right: 12px; top: 50%;
+      transform: translateY(-50%); pointer-events: none; color: var(--muted);
+    }
+    .select-arrow svg { display: block; width: 14px; height: 14px; }
+
+    /* ── BUTTON ROW ── */
+    .btn-row {
+      display: flex; gap: 10px;
+    }
+
+    .btn-seen {
+      flex: 1;
+      background: transparent;
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius);
+      color: var(--muted-hi);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 500;
+      padding: 13px 10px; cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .btn-seen:hover { background: var(--tan); border-color: var(--border); }
+
+    .btn-pick {
+      flex: 2;
+      background: var(--yellow);
+      border: none; border-radius: var(--radius);
+      color: var(--black);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.15rem; letter-spacing: 0.06em;
+      padding: 13px; cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      box-shadow: 0 2px 0 var(--yellow-dim), 0 4px 12px rgba(255,193,7,0.3);
+    }
+    .btn-pick:hover  { background: #ffd340; }
+    .btn-pick:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--yellow-dim); }
+    .btn-pick:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+    /* Initial state — only pick button, full width */
+    .btn-pick.full { flex: 1 1 100%; font-size: 1.2rem; }
+
+    /* ── STATUS ── */
+    #status-msg {
+      font-size: 13px; color: var(--muted);
+      min-height: 18px; font-style: italic;
+    }
+    #status-msg.error { color: var(--red); font-style: normal; }
 
     /* ── FOOTER ── */
     footer {
-      font-size: 11px;
-      color: var(--black-soft);
-      text-align: center;
-      opacity: 0.4;
-      letter-spacing: 0.05em;
+      font-size: 11px; color: var(--black-soft);
+      text-align: center; opacity: 0.4; letter-spacing: 0.05em;
     }
   </style>
 </head>
@@ -371,6 +288,45 @@
   </header>
 
   <div class="card">
+
+    <!-- RESULT — prominent at top, hidden until first pick -->
+    <div id="result">
+      <div class="poster-wrap">
+        <div class="poster-placeholder" id="poster-placeholder">No image</div>
+        <img id="poster-img" src="" alt="" />
+      </div>
+
+      <div class="film-info">
+        <div class="film-meta">
+          <span class="meta-item" id="film-year"></span>
+          <span class="meta-dot" id="dot-1"></span>
+          <span class="meta-item" id="film-runtime"></span>
+          <span class="meta-dot" id="dot-2"></span>
+          <span class="meta-item rating" id="film-rating"></span>
+        </div>
+
+        <h1 class="film-title" id="film-title"></h1>
+        <div class="film-genres" id="film-genres"></div>
+        <p class="film-note" id="film-note" style="display:none"></p>
+        <p class="film-overview" id="film-overview"></p>
+
+        <div class="film-credits" id="film-credits" style="display:none">
+          <div class="credit-row" id="dir-row" style="display:none">
+            <span class="credit-label">Director</span>
+            <span class="credit-value" id="film-director"></span>
+          </div>
+          <div class="credit-row" id="cast-row" style="display:none">
+            <span class="credit-label">Cast</span>
+            <span class="credit-value" id="film-cast"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="quip" id="quip"></div>
+      <div class="card-divider"></div>
+    </div>
+
+    <!-- CONTROLS — always visible below result -->
     <div class="controls">
       <div>
         <label for="genre-select">I'm in the mood for</label>
@@ -403,46 +359,14 @@
         </div>
       </div>
 
-      <button id="pick-btn">Just tell me what to watch</button>
+      <div class="btn-row" id="btn-row">
+        <!-- Seen it only appears after first result -->
+        <button class="btn-pick full" id="pick-btn" onclick="handlePick()">Just tell me what to watch</button>
+      </div>
+
       <div id="status-msg"></div>
     </div>
 
-    <div id="result">
-      <div class="poster-wrap">
-        <div class="poster-placeholder" id="poster-placeholder">No image</div>
-        <img id="poster-img" src="" alt="" />
-      </div>
-
-      <div class="film-info">
-        <div class="film-meta">
-          <span class="meta-item" id="film-year"></span>
-          <span class="meta-dot" id="dot-1"></span>
-          <span class="meta-item" id="film-runtime"></span>
-          <span class="meta-dot" id="dot-2"></span>
-          <span class="meta-item rating" id="film-rating"></span>
-        </div>
-
-        <h1 class="film-title" id="film-title"></h1>
-
-        <div class="film-genres" id="film-genres"></div>
-
-        <p class="film-note"    id="film-note"    style="display:none"></p>
-        <p class="film-overview" id="film-overview"></p>
-
-        <div class="film-credits" id="film-credits" style="display:none">
-          <div class="credit-row" id="dir-row"  style="display:none">
-            <span class="credit-label">Director</span>
-            <span class="credit-value" id="film-director"></span>
-          </div>
-          <div class="credit-row" id="cast-row" style="display:none">
-            <span class="credit-label">Cast</span>
-            <span class="credit-value" id="film-cast"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="quip" id="quip"></div>
-    </div>
   </div>
 
   <footer>Harries Film Unit</footer>
@@ -467,12 +391,22 @@
     "Both beards approved this selection.",
   ];
 
-  const pickBtn  = document.getElementById('pick-btn');
-  const resultEl = document.getElementById('result');
+  const seenQuips = [
+    "Fine. There are plenty more.",
+    "Already seen it. Good for you.",
+    "Fair enough. The list is long.",
+    "Can't win them all. Try again.",
+    "Next.",
+    "The oracle is not offended. Much.",
+  ];
 
-  pickBtn.addEventListener('click', async () => {
+  const pickBtn  = document.getElementById('pick-btn');
+  const seenBtn  = document.getElementById('seen-btn');
+  const resultEl = document.getElementById('result');
+  let hasResult  = false;
+
+  async function handlePick() {
     pickBtn.disabled = true;
-    resultEl.classList.remove('visible');
     setStatus('Consulting the database…');
 
     try {
@@ -488,7 +422,12 @@
     }
 
     pickBtn.disabled = false;
-  });
+  }
+
+  function handleSeen() {
+    setStatus(seenQuips[Math.floor(Math.random() * seenQuips.length)]);
+    handlePick();
+  }
 
   function showFilm(film) {
     document.getElementById('film-title').textContent    = film.title    || '—';
@@ -537,8 +476,14 @@
       placeholder.style.display = 'flex';
     }
 
-    resultEl.classList.add('visible');
-    setTimeout(() => resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    // First result: show the result panel and switch button layout
+    if (!hasResult) {
+      hasResult = true;
+      resultEl.classList.add('visible');
+      pickBtn.classList.remove('full');
+      pickBtn.textContent = 'Try another';
+      setTimeout(() => resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    }
   }
 
   function setStatus(msg, isError = false) {
