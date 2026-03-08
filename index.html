@@ -4,41 +4,66 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>What do you think I should watch?</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=Bebas+Neue&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:         #0d0d14;
-      --card:       #13131f;
-      --border:     #1e1e32;
-      --border-hi:  #2a2a45;
-      --pink:       #ff3d8a;
-      --cyan:       #00d4c8;
-      --white:      #f0eef8;
-      --grey-1:     #c0bcd4;
-      --grey-2:     #7a7690;
-      --grey-3:     #3a3850;
-      --radius:     6px;
+      --yellow:     #ffc107;
+      --yellow-dim: #e6a800;
+      --yellow-pale:#fff3cd;
+      --red:        #c0392b;
+      --red-dim:    #922b21;
+      --black:      #1a1208;
+      --black-soft: #2c1f0e;
+      --cream:      #fdf6e3;
+      --tan:        #f5e6c8;
+      --tan-dark:   #e8d5a8;
+      --muted:      #8a7355;
+      --muted-hi:   #6b5a3e;
+      --border:     #d4b87a;
+      --border-dim: #c4a660;
+      --radius:     4px;
     }
 
     html, body {
       min-height: 100vh;
-      background: var(--bg);
-      color: var(--white);
-      font-family: 'Space Grotesk', sans-serif;
+      color: var(--black);
+      font-family: 'DM Sans', sans-serif;
       font-size: 15px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
 
+    /* Leather texture via layered gradients + noise */
+    body {
+      background-color: #ffc107;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E"),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0,0,0,0.012) 2px,
+          rgba(0,0,0,0.012) 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 3px,
+          rgba(255,255,255,0.015) 3px,
+          rgba(255,255,255,0.015) 6px
+        ),
+        radial-gradient(ellipse at 30% 20%, #ffd740 0%, #ffc107 50%, #f5a800 100%);
+    }
+
     .page {
       max-width: 520px;
       margin: 0 auto;
-      padding: 52px 24px 80px;
+      padding: 48px 20px 80px;
       display: flex;
       flex-direction: column;
-      gap: 36px;
+      gap: 28px;
     }
 
     /* ── HEADER ── */
@@ -48,38 +73,61 @@
       gap: 10px;
     }
 
-    .site-name {
-      font-size: clamp(1.8rem, 7vw, 2.4rem);
-      font-weight: 600;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      color: var(--white);
+    .podcast-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--black-soft);
+      opacity: 0.6;
     }
 
-    /* Gradient on the question mark */
+    .podcast-tag::before {
+      content: '';
+      display: inline-block;
+      width: 18px;
+      height: 2px;
+      background: var(--red);
+    }
+
+    .site-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.6rem, 10vw, 4rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      color: var(--black);
+    }
+
     .site-name em {
       font-style: normal;
-      background: linear-gradient(90deg, var(--pink), var(--cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--red);
     }
 
     .site-desc {
       font-size: 12px;
-      color: var(--grey-2);
-      font-weight: 300;
+      color: var(--muted-hi);
+      font-weight: 400;
       line-height: 1.6;
-      letter-spacing: 0.01em;
     }
 
-    hr {
-      border: none;
-      border-top: 1px solid var(--border);
+    /* ── CARD ── */
+    .card {
+      background: var(--cream);
+      border-radius: 6px;
+      border: 1px solid var(--border-dim);
+      box-shadow:
+        0 2px 0 rgba(0,0,0,0.08),
+        0 8px 24px rgba(0,0,0,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+      overflow: hidden;
     }
 
     /* ── CONTROLS ── */
     .controls {
+      padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -89,9 +137,9 @@
       display: block;
       font-size: 11px;
       font-weight: 500;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--grey-2);
+      color: var(--muted);
       margin-bottom: 7px;
     }
 
@@ -100,81 +148,73 @@
     select {
       width: 100%;
       appearance: none;
-      background: var(--card);
-      border: 1px solid var(--border-hi);
+      background: var(--tan);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
-      color: var(--white);
-      font-family: 'Space Grotesk', sans-serif;
+      color: var(--black);
+      font-family: 'DM Sans', sans-serif;
       font-size: 14px;
-      font-weight: 400;
-      padding: 12px 40px 12px 14px;
+      padding: 11px 36px 11px 13px;
       cursor: pointer;
       outline: none;
       transition: border-color 0.15s;
     }
 
-    select:hover  { border-color: var(--grey-2); }
-    select:focus  { border-color: var(--pink); }
-
-    select option { background: #1a1a2e; }
+    select:hover { border-color: var(--yellow-dim); }
+    select:focus { border-color: var(--yellow); box-shadow: 0 0 0 2px rgba(255,193,7,0.25); }
+    select option { background: var(--cream); }
 
     .select-arrow {
       position: absolute;
-      right: 14px;
+      right: 12px;
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
-      color: var(--grey-2);
+      color: var(--muted);
     }
-
     .select-arrow svg { display: block; width: 14px; height: 14px; }
 
     /* ── BUTTON ── */
     button {
       width: 100%;
-      background: linear-gradient(90deg, var(--pink), var(--cyan));
+      background: var(--yellow);
       border: none;
       border-radius: var(--radius);
-      color: #0d0d14;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
+      color: var(--black);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.08em;
       padding: 14px;
       cursor: pointer;
-      transition: opacity 0.15s;
+      transition: background 0.15s, transform 0.1s;
+      box-shadow: 0 2px 0 var(--yellow-dim), 0 4px 12px rgba(255,193,7,0.3);
     }
 
-    button:hover   { opacity: 0.88; }
-    button:disabled { opacity: 0.25; cursor: not-allowed; }
+    button:hover  { background: #ffd340; }
+    button:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--yellow-dim); }
+    button:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
     /* ── STATUS ── */
     #status-msg {
       font-size: 13px;
-      color: var(--grey-2);
+      color: var(--muted);
       min-height: 18px;
       font-style: italic;
     }
-
-    #status-msg.error { color: var(--pink); font-style: normal; }
+    #status-msg.error { color: var(--red); font-style: normal; }
 
     /* ── RESULT ── */
     #result {
       display: none;
       flex-direction: column;
-      background: var(--card);
-      border: 1px solid var(--border-hi);
-      border-radius: 8px;
-      overflow: hidden;
     }
-
     #result.visible { display: flex; }
 
     /* ── POSTER ── */
     .poster-wrap {
       width: 100%;
       aspect-ratio: 2/3;
-      background: var(--border);
+      background: var(--tan-dark);
       position: relative;
       overflow: hidden;
       flex-shrink: 0;
@@ -188,18 +228,7 @@
       opacity: 0;
       transition: opacity 0.5s ease;
     }
-
     .poster-wrap img.loaded { opacity: 1; }
-
-    /* Subtle gradient fade at bottom of poster into card */
-    .poster-wrap::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 80px;
-      background: linear-gradient(transparent, var(--card));
-      pointer-events: none;
-    }
 
     .poster-placeholder {
       position: absolute;
@@ -207,83 +236,84 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
-      letter-spacing: 0.1em;
+      font-size: 11px;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--grey-3);
+      color: var(--border);
     }
 
     /* ── FILM INFO ── */
     .film-info {
-      padding: 20px 20px 24px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
+      border-top: 1px solid var(--border);
     }
 
     .film-meta {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
     .meta-item {
       font-size: 12px;
-      color: var(--grey-2);
-      font-weight: 400;
+      color: var(--muted);
     }
 
     .meta-dot {
       width: 3px;
       height: 3px;
       border-radius: 50%;
-      background: var(--grey-3);
+      background: var(--border);
       flex-shrink: 0;
     }
 
     .meta-item.rating {
-      color: var(--cyan);
+      color: var(--red);
       font-weight: 500;
     }
 
     .film-title {
-      font-size: clamp(1.4rem, 5vw, 1.9rem);
-      font-weight: 600;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      color: var(--white);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem, 7vw, 2.6rem);
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+      color: var(--black);
     }
 
     .film-genres {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 5px;
     }
 
     .genre-tag {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 500;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 3px 10px;
+      padding: 2px 9px;
       border-radius: 100px;
-      border: 1px solid var(--border-hi);
-      color: var(--grey-2);
+      background: var(--tan);
+      border: 1px solid var(--border);
+      color: var(--muted-hi);
     }
 
     .film-note {
       font-size: 13px;
       font-style: italic;
-      color: var(--grey-1);
+      color: var(--muted-hi);
       line-height: 1.65;
       padding-left: 12px;
-      border-left: 2px solid var(--pink);
+      border-left: 3px solid var(--yellow);
     }
 
     .film-overview {
       font-size: 13px;
-      color: var(--grey-2);
+      color: var(--muted-hi);
       line-height: 1.75;
       font-weight: 300;
     }
@@ -291,39 +321,41 @@
     .film-credits {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
+      gap: 5px;
+      padding-top: 12px;
+      border-top: 1px solid var(--tan-dark);
     }
 
     .credit-row {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       font-size: 12px;
     }
 
     .credit-label {
-      color: var(--grey-3);
+      color: var(--muted);
       min-width: 56px;
       flex-shrink: 0;
     }
 
-    .credit-value { color: var(--grey-1); }
+    .credit-value { color: var(--black-soft); }
 
     /* ── QUIP ── */
     .quip {
-      padding: 12px 20px 14px;
-      border-top: 1px solid var(--border);
+      padding: 12px 20px;
+      border-top: 1px solid var(--tan-dark);
       font-size: 12px;
       font-style: italic;
-      color: var(--grey-3);
+      color: var(--muted);
+      background: var(--tan);
     }
 
     /* ── FOOTER ── */
     footer {
       font-size: 11px;
-      color: var(--grey-3);
+      color: var(--black-soft);
       text-align: center;
+      opacity: 0.4;
       letter-spacing: 0.05em;
     }
   </style>
@@ -333,83 +365,84 @@
 <div class="page">
 
   <header>
-    <div class="site-name">What do you think<br/>I should watch<em>?</em></div>
-    <div class="site-desc">Based on an attempt at a Top 250 · The Podcast Nobody Asked For recommendations · Some random shit thrown in</div>
+    <div class="podcast-tag">The Podcast Nobody Asked For</div>
+    <div class="site-name">What should<br/>I watch<em>?</em></div>
+    <div class="site-desc">Based on Ian's attempt at a Top 250 movie list, movie recommendations featured on The Podcast Nobody Asked For and some random shit</div>
   </header>
 
-  <hr />
-
-  <div class="controls">
-    <div>
-      <label for="genre-select">I'm in the mood for</label>
-      <div class="select-wrap">
-        <select id="genre-select">
-          <option value="">Whatever. Surprise me.</option>
-          <option value="Action">Action</option>
-          <option value="Adventure">Adventure</option>
-          <option value="Animation">Animation</option>
-          <option value="Comedy">Comedy</option>
-          <option value="Crime">Crime</option>
-          <option value="Documentary">Documentary</option>
-          <option value="Drama">Drama</option>
-          <option value="Fantasy">Fantasy</option>
-          <option value="History">History</option>
-          <option value="Horror">Horror</option>
-          <option value="Music">Music</option>
-          <option value="Mystery">Mystery</option>
-          <option value="Romance">Romance</option>
-          <option value="Science Fiction">Science Fiction</option>
-          <option value="Thriller">Thriller</option>
-          <option value="War">War</option>
-          <option value="Western">Western</option>
-        </select>
-        <span class="select-arrow">
-          <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 5L7 10L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-      </div>
-    </div>
-
-    <button id="pick-btn">Just tell me what to watch</button>
-    <div id="status-msg"></div>
-  </div>
-
-  <div id="result">
-    <div class="poster-wrap">
-      <div class="poster-placeholder" id="poster-placeholder">No image</div>
-      <img id="poster-img" src="" alt="" />
-    </div>
-
-    <div class="film-info">
-      <div class="film-meta">
-        <span class="meta-item" id="film-year"></span>
-        <span class="meta-dot" id="dot-1"></span>
-        <span class="meta-item" id="film-runtime"></span>
-        <span class="meta-dot" id="dot-2"></span>
-        <span class="meta-item rating" id="film-rating"></span>
-      </div>
-
-      <h1 class="film-title" id="film-title"></h1>
-
-      <div class="film-genres" id="film-genres"></div>
-
-      <p class="film-note"   id="film-note"   style="display:none"></p>
-      <p class="film-overview" id="film-overview"></p>
-
-      <div class="film-credits" id="film-credits" style="display:none">
-        <div class="credit-row" id="dir-row"  style="display:none">
-          <span class="credit-label">Director</span>
-          <span class="credit-value" id="film-director"></span>
-        </div>
-        <div class="credit-row" id="cast-row" style="display:none">
-          <span class="credit-label">Cast</span>
-          <span class="credit-value" id="film-cast"></span>
+  <div class="card">
+    <div class="controls">
+      <div>
+        <label for="genre-select">I'm in the mood for</label>
+        <div class="select-wrap">
+          <select id="genre-select">
+            <option value="">Whatever. Surprise me.</option>
+            <option value="Action">Action</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Animation">Animation</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Crime">Crime</option>
+            <option value="Documentary">Documentary</option>
+            <option value="Drama">Drama</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="History">History</option>
+            <option value="Horror">Horror</option>
+            <option value="Music">Music</option>
+            <option value="Mystery">Mystery</option>
+            <option value="Romance">Romance</option>
+            <option value="Science Fiction">Science Fiction</option>
+            <option value="Thriller">Thriller</option>
+            <option value="War">War</option>
+            <option value="Western">Western</option>
+          </select>
+          <span class="select-arrow">
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 5L7 10L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
         </div>
       </div>
+
+      <button id="pick-btn">Just tell me what to watch</button>
+      <div id="status-msg"></div>
     </div>
 
-    <div class="quip" id="quip"></div>
+    <div id="result">
+      <div class="poster-wrap">
+        <div class="poster-placeholder" id="poster-placeholder">No image</div>
+        <img id="poster-img" src="" alt="" />
+      </div>
+
+      <div class="film-info">
+        <div class="film-meta">
+          <span class="meta-item" id="film-year"></span>
+          <span class="meta-dot" id="dot-1"></span>
+          <span class="meta-item" id="film-runtime"></span>
+          <span class="meta-dot" id="dot-2"></span>
+          <span class="meta-item rating" id="film-rating"></span>
+        </div>
+
+        <h1 class="film-title" id="film-title"></h1>
+
+        <div class="film-genres" id="film-genres"></div>
+
+        <p class="film-note"    id="film-note"    style="display:none"></p>
+        <p class="film-overview" id="film-overview"></p>
+
+        <div class="film-credits" id="film-credits" style="display:none">
+          <div class="credit-row" id="dir-row"  style="display:none">
+            <span class="credit-label">Director</span>
+            <span class="credit-value" id="film-director"></span>
+          </div>
+          <div class="credit-row" id="cast-row" style="display:none">
+            <span class="credit-label">Cast</span>
+            <span class="credit-value" id="film-cast"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="quip" id="quip"></div>
+    </div>
   </div>
 
   <footer>Harries Film Unit</footer>
@@ -424,14 +457,14 @@
     "You're welcome. Don't overthink it.",
     "The oracle has spoken. No appeals.",
     "Just watch it. Stop scrolling.",
-    "This is a good film. Trust the system.",
     "Ian recommended this. Ian has good taste. Probably.",
     "This came up. The algorithm is not sorry.",
     "No refunds. No exchanges. Enjoy.",
     "A fine choice, if you had made it yourself.",
-    "The database has been consulted. This is what it said.",
     "Stop asking questions. Press play.",
     "You wanted something to watch. Here it is.",
+    "This one survived the list. Barely.",
+    "Both beards approved this selection.",
   ];
 
   const pickBtn  = document.getElementById('pick-btn');
