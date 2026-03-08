@@ -327,34 +327,54 @@
 
     <!-- CONTROLS — always visible below result -->
     <div class="controls">
-      <div>
-        <label for="genre-select">I'm in the mood for</label>
-        <div class="select-wrap">
-          <select id="genre-select">
-            <option value="">Whatever. Surprise me.</option>
-            <option value="Action">Action</option>
-            <option value="Adventure">Adventure</option>
-            <option value="Animation">Animation</option>
-            <option value="Comedy">Comedy</option>
-            <option value="Crime">Crime</option>
-            <option value="Documentary">Documentary</option>
-            <option value="Drama">Drama</option>
-            <option value="Fantasy">Fantasy</option>
-            <option value="History">History</option>
-            <option value="Horror">Horror</option>
-            <option value="Music">Music</option>
-            <option value="Mystery">Mystery</option>
-            <option value="Romance">Romance</option>
-            <option value="Science Fiction">Science Fiction</option>
-            <option value="Thriller">Thriller</option>
-            <option value="War">War</option>
-            <option value="Western">Western</option>
-          </select>
-          <span class="select-arrow">
-            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 5L7 10L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:140px;">
+          <label for="genre-select">Genre</label>
+          <div class="select-wrap">
+            <select id="genre-select">
+              <option value="">Any genre</option>
+              <option value="Action">Action</option>
+              <option value="Adventure">Adventure</option>
+              <option value="Animation">Animation</option>
+              <option value="Comedy">Comedy</option>
+              <option value="Crime">Crime</option>
+              <option value="Documentary">Documentary</option>
+              <option value="Drama">Drama</option>
+              <option value="Fantasy">Fantasy</option>
+              <option value="History">History</option>
+              <option value="Horror">Horror</option>
+              <option value="Music">Music</option>
+              <option value="Mystery">Mystery</option>
+              <option value="Romance">Romance</option>
+              <option value="Science Fiction">Science Fiction</option>
+              <option value="Thriller">Thriller</option>
+              <option value="War">War</option>
+              <option value="Western">Western</option>
+            </select>
+            <span class="select-arrow">
+              <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 5L7 10L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <div style="flex:1; min-width:140px;">
+          <label for="length-select">Length</label>
+          <div class="select-wrap">
+            <select id="length-select">
+              <option value="">Any length</option>
+              <option value="90">Under 90 min</option>
+              <option value="120">Under 2 hours</option>
+              <option value="150">Under 2½ hours</option>
+              <option value="over150">Over 2½ hours</option>
+            </select>
+            <span class="select-arrow">
+              <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 5L7 10L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </div>
         </div>
       </div>
 
@@ -409,11 +429,22 @@
     setStatus('Consulting the database…');
 
     try {
-      const genre = document.getElementById('genre-select').value;
-      const url   = genre ? `${APPS_SCRIPT_URL}?genre=${encodeURIComponent(genre)}` : APPS_SCRIPT_URL;
-      const res   = await fetch(url);
+      const genre  = document.getElementById('genre-select').value;
+      const length = document.getElementById('length-select').value;
+
+      const params = new URLSearchParams();
+      if (genre) params.set('genre', genre);
+      if (length === 'over150') {
+        params.set('minRuntime', '150');
+      } else if (length) {
+        params.set('maxRuntime', length);
+      }
+
+      const url = `${APPS_SCRIPT_URL}${params.toString() ? '?' + params.toString() : ''}`;
+      const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const film  = await res.json();
+      const film = await res.json();
+      if (film.error) throw new Error(film.error);
       showFilm(film);
       setStatus('');
     } catch(e) {
